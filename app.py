@@ -23,7 +23,7 @@ def index():
 def login():
     args = flask.request.get_json()
     if args['username'] == username and args['password'] == password:
-        resp = flask.make_response(flask.render_template('upload.html', text=''))
+        resp = flask.make_response()
         resp.set_cookie('session', session_hash)
         return resp
     else:
@@ -55,6 +55,15 @@ def download_config(filename):
         filename=filename+'.csv',
         as_attachment=True
     )
+
+
+@app.route('/process_orders', methods=['POST'])
+def process_orders():
+    if not is_logged_in():
+        return 'not logged in'
+
+    return 'hi'
+
 
 if __name__ == '__main__':
     app.run(debug=True)
