@@ -1,0 +1,103 @@
+<html>
+	<head>
+		<title>
+			Upload page
+		</title>
+
+        <style>
+            body {
+                font-family: arial, sans-serif;
+            }
+
+            .config-upload-container {
+                margin-bottom: 30px;
+            }
+        </style>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script>
+            $(document).ready(function(e) {
+                $('.download-current-file').click(function(e) {
+                    e.preventDefault();
+                    var file = $(this).siblings('[type=file]').attr('name');
+                    document.getElementById('iframe_for_downloading').src = '/download_config/' + file;
+                });
+            });
+        </script>
+	</head>
+
+	<body>
+        <h1>Process Orders</h1>
+
+		<form method="POST", action="/process_orders" enctype="multipart/form-data">
+            <strong>1) Select configuration:</strong>
+            <input type="radio" name="order_type" value="steaks">Steaks
+            <input type="radio" name="order_type" value="tamales">Tamales
+            <br><br>
+
+			<strong>2) Attach your BigCommerce CSV export: </strong>
+            <input type="file" name="orders"  accept=".csv">
+            <br><br>
+
+            <strong>3) Enter your email: </strong>
+            <input type="email" value="ross.sharma86@gmail.com" />
+            <br><br>
+
+			<strong>4) Submit:</strong>
+            <input type="submit" value="Submit">
+		</form>
+
+        <br>
+        <hr>
+
+        <h1>Configure</h1>
+
+        <div class="config-upload-container">
+            Products - Steaks
+            <form method="POST", action="/upload" enctype="multipart/form-data";>
+                <input type="file" name="products_steaks"  accept=".csv">
+                <input type="submit" value="Upload">
+                <a class="download-current-file" href="#">Download current file</a>
+            </form>
+        </div>
+
+        <div class="config-upload-container">
+            Combos - Steaks
+            <form method="POST", action="/upload" enctype="multipart/form-data";>
+                <input type="file" name="combos_steaks"  accept=".csv">
+                <input type="submit" value="Upload">
+                <a class="download-current-file" href="#">Download current file</a>
+            </form>
+        </div>
+        
+        <br><br>
+
+        <div class="config-upload-container">
+            Products - Tamales
+            <form method="POST", action="/upload" enctype="multipart/form-data";>
+                <input type="file" name="products_tamales"  accept=".csv">
+                <input type="submit" value="Upload">
+                <a class="download-current-file" href="#">Download current file</a>
+            </form>
+        </div>
+
+        <div class="config-upload-container">
+            Combos - Tamales
+            <form method="POST", action="/upload" enctype="multipart/form-data";>
+                <input type="file" name="combo_tamales"  accept=".csv">
+                <input type="submit" value="Upload">
+                <a class="download-current-file" href="#">Download current file</a>
+            </form>
+        </div>
+
+        <iframe id="iframe_for_downloading" style="display:none;"></iframe>
+        
+        <script type="text/javascript">
+            var msg = "{{ text }}";
+            if (msg) {
+                alert(msg);
+            }
+        </script>
+	</body>
+
+</html>
