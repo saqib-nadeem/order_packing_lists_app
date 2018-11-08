@@ -1,5 +1,5 @@
 import flask
-import csv
+import big_commerce
 
 app = flask.Flask(__name__)
 username = 'username'
@@ -66,7 +66,16 @@ def process_orders():
         return 'not logged in'
 
         
-    orders = get_orders_from_csv_file(csv)
+    orders = big_commerce.Parser().get_orders_from_csv_file(None)
+    
+    # Note to Saqib: the variable "orders" contains a list of big_commerce.Order objects
+    # It is currently a dummy implementation.
+    # Simply print the order.id on each page of the PDF file.
+    # You may remove the print statement below.
+    for order in orders:
+        print(order.id)
+        
+    return 'ok'
 
 
 if __name__ == '__main__':
