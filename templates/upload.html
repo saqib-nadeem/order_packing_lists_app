@@ -14,25 +14,14 @@
 
                 $('#submit_orders').click(function(e) {
                     e.preventDefault();
-                
-                    var config = $('input[name=order_type]:checked').val();
-                    if (!config) {
-                        e.preventDefault();
+
+                    if (!$('input[name=order_type]:checked').val()) {
                         alert("Please select a configuration: Steaks or Tamales.");
                         return;
                     }
 
-                    var files = $('#orders_file').prop('files');
-                    if (files.length == 0) {
-                        e.preventDefault();
+                    if ($('#orders_file').prop('files').length == 0) {
                         alert("Please attach your BigCommerce CSV export.");
-                        return;
-                    }
-
-                    var email = $('#email').val().trim();
-                    if (!email) {
-                        e.preventDefault();
-                        alert("Please enter your email address.");
                         return;
                     }
 
@@ -47,26 +36,26 @@
                             if (data == 'not logged in') {
                                 window.location.href = '/';
                             }
-                            
+
                             else {
                                 console.log(data);
                             }
                         },
-                        error: function(a,b,c) { 
-                            alert(a + b + c);
-                            console.error(a,b,c); 
+                        error: function(a,b,c) {
+                            console.error(a,b,c);
                         },
                     });
                 });
-
 
                 $('.download-current-file').click(function(e) {
                     e.preventDefault();
                     var file = $(this).siblings('[type=file]').attr('name');
                     document.getElementById('iframe_for_downloading').src = '/download_config/' + file;
                 });
-
             });
+
+
+
         </script>
 	</head>
 
@@ -83,11 +72,8 @@
             <input type="file" id="orders_file"  accept=".csv">
             <br><br>
 
-            <strong>3) Enter your email: </strong>
-            <input type="email" id="email" value="ross.sharma86@gmail.com" />
-            <br><br>
 
-            <strong>4) Submit:</strong>
+            <strong>3) Submit:</strong>
             <input type="submit" value="Submit" id="submit_orders">
         </form>
 

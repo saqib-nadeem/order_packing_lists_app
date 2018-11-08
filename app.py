@@ -1,5 +1,5 @@
-import os
 import flask
+import csv
 
 app = flask.Flask(__name__)
 username = 'username'
@@ -50,6 +50,9 @@ def upload():
 
 @app.route('/download_config/<path:filename>', methods=['GET'])
 def download_config(filename):
+    if not is_logged_in():
+        return
+
     return flask.send_from_directory(
         directory='files',
         filename=filename+'.csv',
@@ -62,7 +65,8 @@ def process_orders():
     if not is_logged_in():
         return 'not logged in'
 
-    return 'hi'
+        
+    orders = get_orders_from_csv_file(csv)
 
 
 if __name__ == '__main__':
