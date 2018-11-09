@@ -16,12 +16,9 @@ class ComboParser:
                 if combo_name not in combos:
                     combos[combo_name] = Combo(combo_name)
 
-                combos[combo_name].combo_items.append(
-                    ComboItem(row[2], row[3],row[4])
-                )
+                combos[combo_name].combo_items.append(ComboItem(*row[2:]))
 
         return combos
-
 
 
 class Combo:
@@ -29,14 +26,10 @@ class Combo:
     def __init__(self, name):
         self.name = name
         self.combo_items = []
-        
-    
-    def __str__(self):
-        return '\n' + '\n'.join(str(item) for item in self.combo_items) + '\n\n'
-        
-        
+
+
     def __repr__(self):
-        return str(self)
+        return '\n' + '\n'.join(str(item) for item in self.combo_items) + '\n\n'
 
 
 class ComboItem:
@@ -47,19 +40,11 @@ class ComboItem:
         self.description = description
 
 
-    def __str__(self):
-        return 'ComboItem({0}, {1}, {2})'.format(self.qty, self.sku, self.description)
-        
-        
     def __repr__(self):
-        return str(self)
-        
+        return 'ComboItem({0}, {1}, {2})'.format(self.qty, self.sku, self.description)
 
 
 
 if __name__ == '__main__':
-    combos = ComboParser().parse('files/combos_steaks.csv')
-    print(combos)
-
-
-
+    print(ComboParser().parse('files/combos_steaks.csv'))
+    print(ComboParser().parse('files/combos_tamales.csv'))
