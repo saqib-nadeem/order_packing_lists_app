@@ -58,6 +58,11 @@ def download_config(filename):
         as_attachment=True
     )
 
+@app.route('/favicon.ico')
+def favicon():
+    return flask.send_from_directory(os.path.join(app.root_path, 'static', 'images'),
+                               'favicon.ico', mimetype='image/png')
+
 @app.route('/process_orders', methods=['POST'])
 def process_orders():
     if not is_logged_in():
