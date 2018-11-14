@@ -1,1 +1,1 @@
-web: gunicorn order_packing_lists:app
+web: gunicorn app:order_packing_lists
