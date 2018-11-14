@@ -1,6 +1,6 @@
 import os
 
-# from utils import PdfGenerator
+from utils import PdfGenerator
 import big_commerce
 
 import flask
@@ -68,17 +68,17 @@ def process_orders():
     if not is_logged_in():
         return 'not logged in'
         
-    # orders = big_commerce.Parser().get_orders_from_csv_file(None)
-    # PDFGenerator = PdfGenerator()
-    # directory = PDFGenerator.create_directory(username)
-    # if not directory:
-    #     return flask.abort(400)
-    # PDFs = [PDFGenerator.create_file(order.id, directory) for order in orders]  
-    # PDFGenerator.compress_directory(directory)
-    # compressed_file = "{directory}.zip".format(directory=directory)
-    # response = flask.send_file(compressed_file, attachment_filename=compressed_file, as_attachment=True)
-    # PDFGenerator.remove_file(compressed_file)
-    return ''
+    orders = big_commerce.Parser().get_orders_from_csv_file(None)
+    PDFGenerator = PdfGenerator()
+    directory = PDFGenerator.create_directory(username)
+    if not directory:
+        return flask.abort(400)
+    PDFs = [PDFGenerator.create_file(order.id, directory) for order in orders]  
+    PDFGenerator.compress_directory(directory)
+    compressed_file = "{directory}.zip".format(directory=directory)
+    response = flask.send_file(compressed_file, attachment_filename=compressed_file, as_attachment=True)
+    PDFGenerator.remove_file(compressed_file)
+    return response
 
 if __name__ == '__main__':
     app.run(debug=True)
