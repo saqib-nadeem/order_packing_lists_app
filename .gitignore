@@ -23,3 +23,5 @@ $RECYCLE.BIN/
 # =========================
 *.pyc
 files/
+myvenv/
+local_settings.py

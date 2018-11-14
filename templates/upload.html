@@ -30,6 +30,9 @@
                         cache: false,
                         contentType: false,
                         processData: false,
+                        xhrFields: {
+                            responseType: 'blob'
+                        },
                         data: new FormData(document.getElementById('process_orders_form')),
                         type: 'post',
                         success: function(data) {
@@ -38,7 +41,13 @@
                             }
 
                             else {
-                                console.log(data);
+                                // The actual download
+                                var a = document.createElement('a');
+                                var url = window.URL.createObjectURL(data);
+                                a.href = url;
+                                a.download = 'test_pdfs.zip';
+                                a.click();
+                                window.URL.revokeObjectURL(url); 
                             }
                         },
                         error: function(a,b,c) {

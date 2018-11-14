@@ -1,15 +1,17 @@
-import flask
+import os
+
+from utils import PdfGenerator
 import big_commerce
+
+import flask
 
 app = flask.Flask(__name__)
 username = 'username'
 password = 'password'
 session_hash = 'g34th239hs934'
 
-
 def is_logged_in():
     return flask.request.cookies.get('session') == session_hash
-
 
 @app.route('/')
 def index():
@@ -17,7 +19,6 @@ def index():
     if is_logged_in():
         resp.set_cookie('session', '')
     return resp
-
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -28,7 +29,6 @@ def login():
         return resp
     else:
         return 'failure'
-
 
 @app.route('/upload', methods=['POST', 'GET'])
 def upload():
@@ -47,7 +47,6 @@ def upload():
     else:
         return flask.render_template('upload.html', text=flask.request.args.get('text') or '')
 
-
 @app.route('/download_config/<path:filename>', methods=['GET'])
 def download_config(filename):
     if not is_logged_in():
@@ -59,24 +58,22 @@ def download_config(filename):
         as_attachment=True
     )
 
-
 @app.route('/process_orders', methods=['POST'])
 def process_orders():
     if not is_logged_in():
         return 'not logged in'
-
         
     orders = big_commerce.Parser().get_orders_from_csv_file(None)
-    
-    # Note to Saqib: the variable "orders" contains a list of big_commerce.Order objects
-    # It is currently a dummy implementation.
-    # Simply print the order.id on each page of the PDF file.
-    # You may remove the print statement below.
-    for order in orders:
-        print(order.id)
-        
-    return 'ok'
-
+    PDFGenerator = PdfGenerator()
+    directory = PDFGenerator.create_directory(username)
+    if not directory:
+        return flask.abort(400)
+    PDFs = [PDFGenerator.create_file(order.id, directory) for order in orders]  
+    PDFGenerator.compress_directory(directory)
+    compressed_file = "{directory}.zip".format(directory=directory)
+    response = flask.send_file(compressed_file, attachment_filename=compressed_file, as_attachment=True)
+    PDFGenerator.remove_file(compressed_file)
+    return response
 
 if __name__ == '__main__':
     app.run(debug=True)
